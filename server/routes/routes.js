@@ -1,4 +1,6 @@
 const express = require('express');
+let passport = require('passport');
+let LocalStrategy = require('passport-local').Strategy;
 let router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -11,13 +13,17 @@ router.get('/inbox', (req, res, next) => {
     // return all messages 
 });
 
-router.post('/login', (req, res, next) => {
-    // log in the user and authenticate the user
-});
+router.post('/login', passport.authenticate('login', {
+    successRedirect:'/inbox',
+    failureRedirect: '/register',
+    failureFlash: true
+}));
 
-router.post('/register', (req, res, next) => {
-    // sign-in form and store the information for further authentication
-});
+router.post('/register', passport.authenticate('register', {
+    successRedirect:'/inbox',
+    failureRedirect: '/register',
+    failureFlash: true
+}));
 
 router.post('/sendmessage', (req, res, next) => {
     // compose the message and send it to the reciepient 
