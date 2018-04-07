@@ -15,7 +15,8 @@ router.get('/inbox', (req, res, next) => {
 
 router.post('/login', passport.authenticate('login', {
     successRedirect:'/inbox',
-    failureRedirect: '/register'
+    failureRedirect: '/register',
+    failureFlash: true
 }));
 
 router.post('/register', passport.authenticate('register', {
