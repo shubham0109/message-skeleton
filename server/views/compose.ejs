@@ -7,7 +7,7 @@
 
     <style>
         body {
-            background-color: rgba(15, 15, 163, 0.5);
+            background-color: rgba(110, 245, 69, 0.925);
             padding: 80px;
         }
         form {
@@ -19,6 +19,8 @@
     <body>
         <div class="container">
             <form method="POST" action="/sendmessage">
+                <h1>Compose</h1>
+                
                 <div class="form-group">
                   <label>Reciepient User Name</label>
                   <input type="text" class="form-control" name="recievername" placeholder="Enter reciever name">
@@ -31,10 +33,11 @@
                 
                 <div class="form-group">
                     <label>message text</label>
-                    <input type="textarea" class="form-control" name="messagetext" placeholder="message text">
+                    <textarea type="text" class="form-control" name="messagetext" placeholder="message text" rows="10"></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="/inbox" class="btn btn-default">Go back to inbox</a>
               </form>
         </div>
     </body>

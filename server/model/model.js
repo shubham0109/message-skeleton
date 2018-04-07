@@ -6,16 +6,19 @@ let schema = new mongoose.Schema({
     password: String, 
     firstname: String, 
     lastname: String,
-    isblocked: [String],
+    isblocked: [String],  // list of all the blocked users
     messages:[{
         subject: String,
         text: String
     }]
 });
+
+// External library to create hashed password
 schema.methods.generatePassword = function (password) {
     return passwordHash.generate(password);
 }
 schema.methods.verifyPassword = function (password) {
     return passwordHash.verify(password, this.password);
 }
+
 module.exports = mongoose.model('User', schema);

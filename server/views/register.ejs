@@ -4,10 +4,21 @@
         <title>Register</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     </head>
-
+    <style>
+            body {
+                background-color: rgba(110, 245, 69, 0.925);
+                padding: 80px;
+            }
+            form {
+                padding-right: 300px;
+                padding-left: 300px;
+            }
+    </style>
+    
     <body>
         <div class="container">
             <form action="/register" method="POST">
+                <h1>Register</h1>
                 <% if (message.length > 0) { %>
                     <div><%= message %></div>
                 <% } %>

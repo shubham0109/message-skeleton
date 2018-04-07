@@ -12,8 +12,11 @@ let flash = require('connect-flash');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// setting up the view engine
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+// configuring the app
 app.use(cookieParser());
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000*60 },resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
@@ -25,11 +28,15 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-// mongoose schema
+// Mongoose schema
+
+// user model
 let User = require('./model/model.js');
-//console.log(User);
+// connecting through mlabs
 mongoose.connect("mongodb://shubham0109:shubham@ds123619.mlab.com:23619/database1");
 
+
+// PASSPORT CONFIGURATION
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
@@ -47,16 +54,18 @@ passport.use('login',new LocalStrategy({
         passReqToCallback: true
     },
     function(req, username, password, done){
-        console.log("in passport login");
+        //console.log("in passport login");
         User.findOne({username: username}, function(err, user){
             if (err) {return done(err)}
 
             if (!user){
+                // check for username
                 console.log("incorrect username");
                 return done(null, false, req.flash("message", "Incorrect username"))
             }
 
             if (!user.verifyPassword(password)){
+                // check for password
                 console.log("incorrect password");
                 return done(null, false, req.flash("message", "Incorrect password"));
             }
@@ -72,14 +81,16 @@ passport.use('register', new LocalStrategy({
         passReqToCallback: true
     },
     function(req, username, password, done){
-        console.log("here");
+        //console.log("here");
         User.findOne({username: username}, function(err, user){
             if (err) {return done(err)}
 
             if (user){
+                // if user already exists
                 console.log("user exists");
                 return done(null, false, req.flash("message", "User exists"));
             }else {
+                // get the details of the new user and push it into database
                 let newUser = new User();
                 newUser.username = username;
                 newUser.password = newUser.generatePassword(password);
@@ -99,8 +110,11 @@ passport.use('register', new LocalStrategy({
         });
     }
 ));
+
+ 
 app.use('/', route);
-//require('./routes/routes.js')(app, passport);
+
+
 app.listen(port, () => {
     console.log(`listening at ${port}`);
 });

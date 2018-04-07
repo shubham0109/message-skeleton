@@ -1,13 +1,13 @@
 <! doctype html>
 <html>
     <head>
-        <title>Log In</title>
+        <title>Inbox</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     </head>
 
     <style>
         body {
-            background-color: rgba(15, 15, 163, 0.5);
+            background-color: rgba(110, 245, 69, 0.925);
             padding: 80px;
         }
         form {
@@ -17,13 +17,15 @@
     </style>
 
     <body>
-            <a href="/sendmessage" class="btn btn-default">compose </a>
-            <a href="/block" class="btn btn-default">block</a>
+            <h1><center>Inbox</center></h1>
+            <a href="/sendmessage" class="btn btn-default">compose a message</a>
+            <a href="/block" class="btn btn-default">block a user</a>
         <div class="container">
             <% for (let i = 0; i < msgArray.length; i++) { %>
             <div class="jumbotron">
-                <h3><%= msgArray[i].subject %></h3>
-                <p><%= msgArray[i].text %></p>
+                <span><h3>Subject: </h3><h6><%= msgArray[i].subject %></h6></span>
+                <br><br>
+                <span><h3>Text: </h3><span><p><%= msgArray[i].text %></p></span>
             </div>
             <% } %>
         </div>
