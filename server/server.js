@@ -4,9 +4,16 @@ let route = require('./routes/routes');
 let mongoose = require('mongoose');
 let passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
+let passwordHash = require('password-hash');
 
 // mongoose schema
 let schema = new mongoose.Schema({username: 'string', password: 'string', firstname: 'string', lastname: 'string'});
+schema.methods.generatePassword = function (password) {
+    return passwordHash.generate(password);
+}
+schema.methods.verifyPassword = function (password) {
+    return passwordHash.verify(password, this.password);
+}
 let User = mongoose.model('User', schema);
 mongoose.connect("mongodb://shubham0109:shubham@ds123619.mlab.com:23619/database1");
 
@@ -20,7 +27,7 @@ passport.use('login',new LocalStrategy(
                 return done(null, false, {messae : "Incorrect username"})
             }
 
-            if (!user.validPassword(password)){
+            if (!user.verifyPassword(password)){
                 return done(null, false, { message: 'Incorrect password' });
             }
 
@@ -43,7 +50,7 @@ passport.use('register', new LocalStrategy(
             }else {
                 let newUser = new User();
                 newUser.username = username;
-                newUser.password = password;
+                newUser.password = newUser.generatePassword(password);
             //    newUser.firstname = firstname;
             //    newUser.lastname = lastname;
 
