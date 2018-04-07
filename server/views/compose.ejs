@@ -1,0 +1,41 @@
+<! doctype html>
+<html>
+    <head>
+        <title>Compose</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    </head>
+
+    <style>
+        body {
+            background-color: rgba(15, 15, 163, 0.5);
+            padding: 80px;
+        }
+        form {
+            padding-right: 300px;
+            padding-left: 300px;
+        }
+    </style>
+
+    <body>
+        <div class="container">
+            <form method="POST" action="/sendmessage">
+                <div class="form-group">
+                  <label>Reciepient User Name</label>
+                  <input type="text" class="form-control" name="recievername" placeholder="Enter reciever name">
+                </div>
+
+                <div class="form-group">
+                  <label>message subject</label>
+                  <input type="text" class="form-control" name="messagesubject" placeholder="message subject">
+                </div>
+                
+                <div class="form-group">
+                    <label>message text</label>
+                    <input type="textarea" class="form-control" name="messagetext" placeholder="message text">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,34 @@
+<! doctype html>
+<html>
+    <head>
+        <title>Register</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <form action="/register" method="POST">
+                <% if (message.length > 0) { %>
+                    <div><%= message %></div>
+                <% } %>
+                <div class="form-group">
+                  <label >User Name</label>
+                  <input type="text" class="form-control" name="username" placeholder="Enter user name">
+                </div>
+                <div class="form-group">
+                  <label >Password</label>
+                  <input type="password" class="form-control" name="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" name="firstname" placeholder="Enter first name">
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" name="lastname" placeholder="Enter last name">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </body>
+</html>

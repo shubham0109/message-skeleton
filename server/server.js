@@ -11,10 +11,14 @@ let flash = require('connect-flash');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 },resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
-app.use('/', route);
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -22,33 +26,42 @@ app.use(bodyParser.json());
 
 
 // mongoose schema
-let schema = new mongoose.Schema({username: 'string', password: 'string', firstname: 'string', lastname: 'string'});
-schema.methods.generatePassword = function (password) {
-    return passwordHash.generate(password);
-}
-schema.methods.verifyPassword = function (password) {
-    return passwordHash.verify(password, this.password);
-}
-let User = mongoose.model('User', schema);
+let User = require('./model/model.js');
+//console.log(User);
 mongoose.connect("mongodb://shubham0109:shubham@ds123619.mlab.com:23619/database1");
+
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
 
 // login passport config
 passport.use('login',new LocalStrategy({
         passReqToCallback: true
     },
-    function(username, password, done){
+    function(req, username, password, done){
+        console.log("in passport login");
         User.findOne({username: username}, function(err, user){
             if (err) {return done(err)}
 
             if (!user){
-                return done(null, false, {messae : "Incorrect username"})
+                console.log("incorrect username");
+                return done(null, false, req.flash("message", "Incorrect username"))
             }
 
             if (!user.verifyPassword(password)){
-                return done(null, false, { message: 'Incorrect password' });
+                console.log("incorrect password");
+                return done(null, false, req.flash("message", "Incorrect password"));
             }
 
-            return done(user);
+            return done(null, user);
         });
     }
 ));
@@ -65,13 +78,13 @@ passport.use('register', new LocalStrategy({
 
             if (user){
                 console.log("user exists");
-                return done(null, false, req.flash({message : "User exists"}));
+                return done(null, false, req.flash("message", "User exists"));
             }else {
                 let newUser = new User();
                 newUser.username = username;
                 newUser.password = newUser.generatePassword(password);
-                newUser.firstname = req.firstname;
-                newUser.lastname = req.lastname;
+                newUser.firstname = req.body.firstname;
+                newUser.lastname = req.body.lastname;
 
                 newUser.save(function(err){
                     if (err){
@@ -80,14 +93,14 @@ passport.use('register', new LocalStrategy({
                         console.log("succesfully added")
                     }
                 });
-                return done(newUser);
+                return done(null, newUser);
             }
             
         });
     }
 ));
-
-
+app.use('/', route);
+//require('./routes/routes.js')(app, passport);
 app.listen(port, () => {
     console.log(`listening at ${port}`);
 });

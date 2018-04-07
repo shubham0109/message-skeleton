@@ -1,0 +1,30 @@
+<! doctype html>
+<html>
+    <head>
+        <title>Log In</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    </head>
+
+    <style>
+        body {
+            background-color: rgba(15, 15, 163, 0.5);
+            padding: 80px;
+        }
+        form {
+            padding-right: 300px;
+            padding-left: 300px;
+        }
+    </style>
+
+    <body>
+            <a href="/sendmessage" class="btn btn-default"><span class="fa fa-user"></span>compose </a>
+        <div class="container">
+            <% for (i in msgArray) { %>
+            <div class="jumbotron">
+                <h3><%= i.subject %></h3>
+                <p><%= i.text %></p>
+            </div>
+            <% } %>
+        </div>
+    </body>
+</html>

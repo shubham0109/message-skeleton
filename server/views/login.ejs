@@ -1,0 +1,39 @@
+<! doctype html>
+<html>
+    <head>
+        <title>Log In</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    </head>
+
+    <style>
+        body {
+            background-color: rgba(15, 15, 163, 0.5);
+            padding: 80px;
+        }
+        form {
+            padding-right: 300px;
+            padding-left: 300px;
+        }
+    </style>
+
+    <body>
+        <div class="container">
+            <form action="/login" method="POST">
+                <h2>LOG IN</h2>
+                <% if (message.length > 0) { %>
+                    <div><%= message %></div>
+                <% } %>
+                <div class="form-group">
+                  <label >User Name</label>
+                  <input type="text" name="username" class="form-control" placeholder="Enter username">
+        
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" name="password" class="form-control"  placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </body>
+</html>
