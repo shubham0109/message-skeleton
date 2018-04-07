@@ -17,15 +17,16 @@
     </style>
 
     <body>
-            <a href="/sendmessage" class="btn btn-default">compose </a>
-            <a href="/block" class="btn btn-default">block</a>
         <div class="container">
-            <% for (let i = 0; i < msgArray.length; i++) { %>
-            <div class="jumbotron">
-                <h3><%= msgArray[i].subject %></h3>
-                <p><%= msgArray[i].text %></p>
-            </div>
-            <% } %>
+            <form action="/block" method="POST">
+                <h2>BLOCK USER</h2>
+                <div class="form-group">
+                  <label >User Name </label>
+                  <input type="text" name="blockname" class="form-control" placeholder="Enter username of user to be blocked">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Block</button>
+              </form>
         </div>
     </body>
 </html>

@@ -15,9 +15,9 @@ router.get('/inbox', isActive, (req, res) => {
     // return all messages 
     console.log("inside inbox");
     let username = req.username;
-    console.log(username);
+    console.log("session: ", req.session.passport.user);
     let msgArray = [];
-    User.findOne({username: username}, function(err, user){
+    User.findById(req.session.passport.user, function(err, user){
         if (err){
             console.log("error");
             return err;
@@ -27,13 +27,17 @@ router.get('/inbox', isActive, (req, res) => {
         }
         else {
             let messages = user.messages;
-            for (i in messages){
-                msgArray.push(i);
+            console.log(messages);
+            for (let i = 0; i < messages.length; i++){
+                msgArray.push(messages[i]);
+                console.log(i);
             }
 
         }
+        console.log(msgArray);
+        res.render('inbox.ejs', {msgArray: msgArray});
     });
-    res.render('inbox.ejs', {msgArray: msgArray});
+    
 });
 
 router.post('/login', passport.authenticate('login', {
@@ -100,9 +104,54 @@ router.get('/sendmessage', function(req, res) {
     res.render('compose.ejs');
 });
 
-router.put('/block/username', (req, res) => {
+router.put('/block', isActive, (req, res) => {
    // block the user
+    console.log("inside block ");
+    let username = req.blockname;
+    console.log("session: ", req.session.passport.user);
+    User.findById(req.session.passport.user, function(err, user){
+        if (err){
+            console.log("error");
+            return err;
+        }
+        else if (!user){
+            console.log("no user");
+        }
+        else {
+            user.isblocked.push(username);
+            user.save();
+            console.log("user blocked");
+        }
+        res.redirect('/inbox');
+    });
 });
+
+router.post('/block', isActive, (req, res) => {
+    // block the user
+     console.log("inside block post");
+     let username = req.body.blockname;
+
+     console.log("session: ", req.session.passport.user);
+     User.findById(req.session.passport.user, function(err, user){
+         if (err){
+             console.log("error");
+             return err;
+         }
+         else if (!user){
+             console.log("no user");
+         }
+         else {
+             user.isblocked.push(username);
+             user.save();
+             console.log("user blocked");
+         }
+         res.redirect('/inbox');
+     });
+ });
+
+router.get('/block', isActive, (req, res) => {
+    res.render('block.ejs');
+})
 
 function isActive(req, res, next) {
  

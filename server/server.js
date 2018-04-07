@@ -15,7 +15,7 @@ const port = process.env.PORT || 3000;
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(cookieParser());
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 },resave: true, saveUninitialized: true}));
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000*60 },resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
